@@ -250,7 +250,6 @@
         [data-theme="light"] .features { background: #fff; }
         [data-theme="light"] .categories { background: #fff; }
         [data-theme="light"] .products { background: #f7f5f2; }
-        [data-theme="light"] .menu-toggle span { background: #1a1a1a; }
         [data-theme="light"] .cart-whatsapp-btn { border-color: #25D366; color: #25D366; }
         [data-theme="light"] .cart-whatsapp-btn:hover { background: #25D366; color: #fff; }
         [data-theme="light"] .cart-summary-total .cart-summary-value { color: var(--gold); }
@@ -514,15 +513,19 @@
             display: none;
             flex-direction: column;
             gap: 6px;
-            width: 28px;
-            padding: 6px 0;
+            width: 30px;
+            padding: 4px 0;
         }
         .menu-toggle span {
             display: block;
+            width: 100%;
             height: 2px;
-            background: var(--white);
+            background: #fafafa;
             border-radius: 1px;
             transition: all 0.4s var(--ease-luxury);
+        }
+        [data-theme="light"] .menu-toggle span {
+            background: #1a1a1a;
         }
         .menu-toggle.active span:nth-child(1) {
             transform: rotate(45deg) translate(4px, 4px);
