@@ -54,6 +54,7 @@
             --gray-light: #555;
             --gray-dark: #999;
         }
+        [data-theme="light"],
         [data-theme="light"] body {
             background: #ffffff;
             color: #1a1a1a;
@@ -302,7 +303,7 @@
             scroll-behavior: smooth;
             font-size: 16px;
             overflow-x: hidden;
-            height: 100%;
+            background: var(--black);
         }
 
         body {
@@ -311,7 +312,6 @@
             color: var(--white);
             line-height: 1.6;
             overflow-x: hidden;
-            min-height: 100%;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -541,13 +541,9 @@
             align-items: center;
             justify-content: center;
             gap: 2rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s var(--ease-luxury);
         }
         .mobile-menu.active {
-            opacity: 1;
-            visibility: visible;
+            display: flex;
         }
         .mobile-menu a {
             font-family: var(--font-display);
@@ -1459,6 +1455,8 @@
             background: var(--black);
             border-top: 1px solid rgba(200, 169, 126, 0.08);
             padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem) 2rem;
+            position: relative;
+            z-index: 1;
         }
         .footer-grid {
             display: grid;
@@ -2297,14 +2295,15 @@
             position: fixed;
             inset: 0;
             z-index: 3000;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.4s var(--ease-luxury);
+            transition: opacity 0.4s var(--ease-luxury), visibility 0.4s;
         }
         .checkout-modal.active {
+            display: flex;
             opacity: 1;
             visibility: visible;
         }
