@@ -513,14 +513,15 @@
         .menu-toggle {
             display: none;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
             width: 28px;
-            padding: 4px 0;
+            padding: 6px 0;
         }
         .menu-toggle span {
             display: block;
-            height: 1px;
+            height: 2px;
             background: var(--white);
+            border-radius: 1px;
             transition: all 0.4s var(--ease-luxury);
         }
         .menu-toggle.active span:nth-child(1) {
@@ -2699,7 +2700,6 @@
         @media (max-width: 900px) {
             .nav-links { display: none; }
             .menu-toggle { display: flex; }
-            .mobile-menu { display: flex; }
         }
 
         @media (max-width: 768px) {
