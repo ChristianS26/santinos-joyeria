@@ -2683,10 +2683,10 @@
            ============================================ */
         @media (max-width: 1024px) {
             .nav { padding: 1rem 2rem; }
-            .nav-links { gap: 1.5rem; }
-            .nav-links a { font-size: 0.6rem; letter-spacing: 0.1em; }
+            .nav-links { display: none; }
             .nav-logo { font-size: 1.2rem; }
             .nav-actions { gap: 1rem; }
+            .menu-toggle { display: flex; }
             .products-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -2696,10 +2696,6 @@
             .footer-grid {
                 grid-template-columns: 1fr 1fr;
             }
-        }
-        @media (max-width: 900px) {
-            .nav-links { display: none; }
-            .menu-toggle { display: flex; }
         }
 
         @media (max-width: 768px) {
