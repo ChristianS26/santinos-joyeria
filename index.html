@@ -2761,6 +2761,136 @@
                 text-align: center;
             }
         }
+
+        /* ============================================
+           FOTOGRAFÍA REAL + REFINAMIENTO DARK
+           ============================================ */
+
+        /* ---- Encuadre base de las fotos ---- */
+        .product-photo,
+        .category-photo {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ---- Producto: tratamiento editorial ---- */
+        .product-image-inner { transition: transform 0.9s var(--ease-out-expo); }
+        .product-photo {
+            filter: saturate(0.82) contrast(1.08) brightness(0.9);
+            transition: filter 0.7s var(--ease-luxury);
+        }
+        .product-card:hover .product-image-inner { transform: scale(1.06); }
+        .product-card:hover .product-photo {
+            filter: saturate(1.06) contrast(1.12) brightness(1.02);
+        }
+
+        /* el shimmer era del placeholder; sobre foto real pasa a barrido dorado al hover */
+        .product-image-inner::after {
+            background: linear-gradient(110deg, transparent 34%, rgba(232,213,183,0.13) 50%, transparent 66%);
+            animation: none;
+            opacity: 0;
+            transition: opacity 0.45s var(--ease-luxury);
+        }
+        .product-card:hover .product-image-inner::after {
+            opacity: 1;
+            animation: shimmer 1.5s var(--ease-luxury);
+        }
+
+        /* profundidad: scrim inferior + marco hairline dorado */
+        .product-image {
+            border: 1px solid rgba(200,169,126,0.10);
+            transition: border-color 0.6s var(--ease-luxury), box-shadow 0.6s var(--ease-luxury);
+        }
+        .product-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: linear-gradient(to top, rgba(6,6,6,0.62) 0%, rgba(6,6,6,0.18) 34%, transparent 62%);
+        }
+        .product-card:hover .product-image {
+            border-color: rgba(200,169,126,0.4);
+            box-shadow: 0 22px 55px -20px rgba(0,0,0,0.9), 0 0 0 1px rgba(200,169,126,0.12);
+        }
+        /* controles por encima del scrim */
+        .product-badge,
+        .product-wishlist,
+        .product-add-btn { z-index: 2; }
+
+        /* ---- Categorías: foto + overlay legible ---- */
+        .category-photo {
+            filter: saturate(0.85) contrast(1.06) brightness(0.72);
+            transition: filter 0.85s var(--ease-luxury);
+        }
+        .category-card:hover .category-photo {
+            filter: saturate(1) contrast(1.1) brightness(0.9);
+        }
+        .category-overlay {
+            z-index: 1;
+            background: linear-gradient(0deg, rgba(6,6,6,0.95) 0%, rgba(6,6,6,0.6) 34%, rgba(6,6,6,0.12) 66%, rgba(6,6,6,0.4) 100%);
+        }
+        .category-card {
+            border: 1px solid rgba(200,169,126,0.08);
+            transition: border-color 0.6s var(--ease-luxury), box-shadow 0.6s var(--ease-luxury);
+        }
+        .category-card:hover {
+            border-color: rgba(200,169,126,0.32);
+            box-shadow: 0 24px 60px -22px rgba(0,0,0,0.9);
+        }
+        .category-arrow { z-index: 2; }
+        .category-name { text-shadow: 0 2px 20px rgba(0,0,0,0.6); }
+
+        /* ---- Oro metálico en los títulos ---- */
+        @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+            .section-title em {
+                background: linear-gradient(100deg, var(--gold-dark) 0%, var(--gold-light) 42%, var(--gold-bright) 62%, var(--gold) 100%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+        .section-divider {
+            width: 70px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        /* ---- Jerarquía de producto más firme ---- */
+        .product-info { padding-top: 0.15rem; }
+        .product-name { letter-spacing: 0.015em; }
+        .product-price { letter-spacing: 0.06em; }
+
+        /* ---- Tema claro: las fotos no deben verse apagadas ---- */
+        [data-theme="light"] .product-photo { filter: saturate(1) contrast(1.02) brightness(1.02); }
+        [data-theme="light"] .category-photo { filter: saturate(0.95) contrast(1.02) brightness(0.85); }
+        [data-theme="light"] .product-image::before {
+            background: linear-gradient(to top, rgba(20,20,20,0.34) 0%, transparent 55%);
+        }
+        [data-theme="light"] .product-image { border-color: rgba(154,123,91,0.18); }
+        [data-theme="light"] .category-card { border-color: rgba(154,123,91,0.16); }
+
+        /* ---- Ajuste por pieza: nivelar exposición entre fotos ---- */
+        /* fondos muy oscuros: subir para que la pieza se lea */
+        .prod-4 .product-photo { filter: saturate(0.95) contrast(1.1) brightness(1.35); }
+        .prod-4:hover .product-photo { filter: saturate(1.15) contrast(1.14) brightness(1.5); }
+        .cat-aretes .category-photo { filter: saturate(0.95) contrast(1.08) brightness(1.15); }
+        .cat-aretes:hover .category-photo { filter: saturate(1.05) contrast(1.1) brightness(1.35); }
+
+        /* fondos claros: bajar para que no rompan la retícula oscura */
+        .prod-8 .product-photo { filter: saturate(0.78) contrast(1.09) brightness(0.55); }
+        .prod-8:hover .product-photo { filter: saturate(1) contrast(1.12) brightness(0.68); }
+        .prod-6 .product-photo { filter: saturate(0.85) contrast(1.08) brightness(0.82); }
+        .prod-6:hover .product-photo { filter: saturate(1.05) contrast(1.12) brightness(0.95); }
+
+        /* en tema claro estos ajustes no aplican */
+        [data-theme="light"] .prod-4 .product-photo,
+        [data-theme="light"] .prod-6 .product-photo,
+        [data-theme="light"] .prod-8 .product-photo { filter: saturate(1) contrast(1.02) brightness(1.02); }
+        [data-theme="light"] .cat-aretes .category-photo { filter: saturate(0.95) contrast(1.02) brightness(0.95); }
     </style>
 </head>
 <body>
@@ -2844,10 +2974,7 @@
         </div>
         <div class="categories-grid">
             <div class="category-card reveal reveal-delay-1 cat-anillos interactive">
-                <div class="category-bg"></div>
-                <div class="category-icon">
-                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 30c0 0 5-16 20-16s20 16 20 16"/><path d="M20 30c0 14 8 24 20 24s20-10 20-24"/><ellipse cx="40" cy="30" rx="20" ry="4"/></svg>
-                </div>
+                <div class="category-bg"><img class="category-photo" src="images/c1-cadenas.jpg" alt="Cadenas de oro" width="700" height="900" loading="lazy" decoding="async"></div>
                 <div class="category-overlay">
                     <h3 class="category-name">Cadenas</h3>
                     <p class="category-count">Oro y diamantes</p>
@@ -2857,10 +2984,7 @@
                 </div>
             </div>
             <div class="category-card reveal reveal-delay-2 cat-collares interactive">
-                <div class="category-bg"></div>
-                <div class="category-icon">
-                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1"><ellipse cx="40" cy="40" rx="24" ry="10"/><ellipse cx="40" cy="40" rx="18" ry="7"/><path d="M16 40h48"/></svg>
-                </div>
+                <div class="category-bg"><img class="category-photo" src="images/c2-esclavas.jpg" alt="Esclavas de oro" width="700" height="900" loading="lazy" decoding="async"></div>
                 <div class="category-overlay">
                     <h3 class="category-name">Esclavas</h3>
                     <p class="category-count">Oro macizo</p>
@@ -2870,10 +2994,7 @@
                 </div>
             </div>
             <div class="category-card reveal reveal-delay-3 cat-relojes interactive">
-                <div class="category-bg"></div>
-                <div class="category-icon">
-                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1"><circle cx="40" cy="40" r="22"/><circle cx="40" cy="40" r="18"/><path d="M40 28v12l8 8"/><path d="M40 10v8M40 62v8"/></svg>
-                </div>
+                <div class="category-bg"><img class="category-photo" src="images/c3-relojes.jpg" alt="Relojes de lujo" width="700" height="900" loading="lazy" decoding="async"></div>
                 <div class="category-overlay">
                     <h3 class="category-name">Relojes de Lujo</h3>
                     <p class="category-count">Iced out & clásicos</p>
@@ -2883,10 +3004,7 @@
                 </div>
             </div>
             <div class="category-card reveal reveal-delay-4 cat-aretes interactive">
-                <div class="category-bg"></div>
-                <div class="category-icon">
-                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1"><circle cx="40" cy="40" r="25"/><circle cx="40" cy="40" r="18"/><path d="M32 22l8-8 8 8"/></svg>
-                </div>
+                <div class="category-bg"><img class="category-photo" src="images/c4-anillos.jpg" alt="Anillos" width="700" height="900" loading="lazy" decoding="async"></div>
                 <div class="category-overlay">
                     <h3 class="category-name">Anillos</h3>
                     <p class="category-count">Oro con piedras preciosas</p>
@@ -2896,10 +3014,7 @@
                 </div>
             </div>
             <div class="category-card reveal reveal-delay-5 cat-pulseras interactive">
-                <div class="category-bg"></div>
-                <div class="category-icon">
-                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1"><ellipse cx="40" cy="40" rx="28" ry="16"/><ellipse cx="40" cy="40" rx="22" ry="12"/></svg>
-                </div>
+                <div class="category-bg"><img class="category-photo" src="images/c5-brazaletes.jpg" alt="Brazaletes" width="700" height="900" loading="lazy" decoding="async"></div>
                 <div class="category-overlay">
                     <h3 class="category-name">Brazaletes</h3>
                     <p class="category-count">Diseños exclusivos</p>
@@ -2909,10 +3024,7 @@
                 </div>
             </div>
             <div class="category-card reveal reveal-delay-6 cat-especial interactive">
-                <div class="category-bg"></div>
-                <div class="category-icon">
-                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1"><path d="M40 14l6 12 14 2-10 10 2 14-12-6-12 6 2-14-10-10 14-2z"/></svg>
-                </div>
+                <div class="category-bg"><img class="category-photo" src="images/c6-dijes.jpg" alt="Dijes" width="700" height="900" loading="lazy" decoding="async"></div>
                 <div class="category-overlay">
                     <h3 class="category-name">Dijes</h3>
                     <p class="category-count">Piezas únicas</p>
@@ -2934,10 +3046,7 @@
         <div class="products-grid">
             <article class="product-card reveal reveal-delay-1 prod-1 interactive">
                 <div class="product-image">
-                    <div class="product-image-inner"></div>
-                    <div class="product-silhouette">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="0.8"><circle cx="30" cy="30" r="18"/><circle cx="30" cy="30" r="12"/><path d="M24 16l6-6 6 6"/></svg>
-                    </div>
+                    <div class="product-image-inner"><img class="product-photo" src="images/p1-cadena-cubana.jpg" alt="Cadena cubana de oro 14k" width="800" height="800" loading="lazy" decoding="async"></div>
                     <span class="product-badge">Oro 14k</span>
                     <button class="product-wishlist interactive" aria-label="Agregar a favoritos">
                         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2952,10 +3061,7 @@
             </article>
             <article class="product-card reveal reveal-delay-2 prod-2 interactive">
                 <div class="product-image">
-                    <div class="product-image-inner"></div>
-                    <div class="product-silhouette">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="0.8"><ellipse cx="30" cy="38" rx="16" ry="12"/><path d="M14 38c0-14 8-26 16-26s16 12 16 26"/><circle cx="30" cy="50" r="3"/></svg>
-                    </div>
+                    <div class="product-image-inner"><img class="product-photo" src="images/p2-reloj-iced.jpg" alt="Reloj iced out con diamantes" width="800" height="800" loading="lazy" decoding="async"></div>
                     <button class="product-wishlist interactive" aria-label="Agregar a favoritos">
                         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </button>
@@ -2969,10 +3075,7 @@
             </article>
             <article class="product-card reveal reveal-delay-3 prod-3 interactive">
                 <div class="product-image">
-                    <div class="product-image-inner"></div>
-                    <div class="product-silhouette">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="0.8"><ellipse cx="30" cy="30" rx="20" ry="12"/><ellipse cx="30" cy="30" rx="16" ry="9"/></svg>
-                    </div>
+                    <div class="product-image-inner"><img class="product-photo" src="images/p3-esclava-barbada.jpg" alt="Esclava barbada de oro 10k" width="800" height="800" loading="lazy" decoding="async"></div>
                     <span class="product-badge">Oro 10k</span>
                     <button class="product-wishlist interactive" aria-label="Agregar a favoritos">
                         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2987,10 +3090,7 @@
             </article>
             <article class="product-card reveal reveal-delay-4 prod-4 interactive">
                 <div class="product-image">
-                    <div class="product-image-inner"></div>
-                    <div class="product-silhouette">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="0.8"><circle cx="30" cy="18" r="5"/><path d="M30 23v6"/><circle cx="30" cy="38" r="10"/><circle cx="30" cy="38" r="5"/></svg>
-                    </div>
+                    <div class="product-image-inner"><img class="product-photo" src="images/p4-anillo-esmeralda.jpg" alt="Anillo de esmeralda en oro 14k" width="800" height="800" loading="lazy" decoding="async"></div>
                     <button class="product-wishlist interactive" aria-label="Agregar a favoritos">
                         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </button>
@@ -3004,10 +3104,7 @@
             </article>
             <article class="product-card reveal reveal-delay-5 prod-5 interactive">
                 <div class="product-image">
-                    <div class="product-image-inner"></div>
-                    <div class="product-silhouette">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="0.8"><circle cx="30" cy="30" r="18"/><circle cx="30" cy="30" r="14"/><path d="M30 16v14l6 6"/></svg>
-                    </div>
+                    <div class="product-image-inner"><img class="product-photo" src="images/p5-reloj-oro-rosa.jpg" alt="Reloj clasico en oro rosa" width="800" height="800" loading="lazy" decoding="async"></div>
                     <span class="product-badge">Iced Out</span>
                     <button class="product-wishlist interactive" aria-label="Agregar a favoritos">
                         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -3022,10 +3119,7 @@
             </article>
             <article class="product-card reveal reveal-delay-6 prod-6 interactive">
                 <div class="product-image">
-                    <div class="product-image-inner"></div>
-                    <div class="product-silhouette">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="0.8"><circle cx="30" cy="30" r="18"/><circle cx="30" cy="30" r="12"/><path d="M24 16l6-6 6 6"/></svg>
-                    </div>
+                    <div class="product-image-inner"><img class="product-photo" src="images/p6-cadena-franco.jpg" alt="Cadena franco diamantada" width="800" height="800" loading="lazy" decoding="async"></div>
                     <button class="product-wishlist interactive" aria-label="Agregar a favoritos">
                         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </button>
@@ -3039,10 +3133,7 @@
             </article>
             <article class="product-card reveal reveal-delay-7 prod-7 interactive">
                 <div class="product-image">
-                    <div class="product-image-inner"></div>
-                    <div class="product-silhouette">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="0.8"><ellipse cx="30" cy="38" rx="16" ry="12"/><path d="M14 38c0-14 8-26 16-26s16 12 16 26"/><circle cx="30" cy="50" r="3"/></svg>
-                    </div>
+                    <div class="product-image-inner"><img class="product-photo" src="images/p7-brazalete-premium.jpg" alt="Brazalete premium con diamantes" width="800" height="800" loading="lazy" decoding="async"></div>
                     <button class="product-wishlist interactive" aria-label="Agregar a favoritos">
                         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </button>
@@ -3056,10 +3147,7 @@
             </article>
             <article class="product-card reveal reveal-delay-7 prod-8 interactive">
                 <div class="product-image">
-                    <div class="product-image-inner"></div>
-                    <div class="product-silhouette">
-                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="0.8"><path d="M30 10l5 10 11 2-8 8 2 11-10-5-10 5 2-11-8-8 11-2z"/></svg>
-                    </div>
+                    <div class="product-image-inner"><img class="product-photo" src="images/p8-dije-cruz.jpg" alt="Dije de cruz con diamantes en oro 18k" width="800" height="800" loading="lazy" decoding="async"></div>
                     <span class="product-badge">Oro 18k</span>
                     <button class="product-wishlist interactive" aria-label="Agregar a favoritos">
                         <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
